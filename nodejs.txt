@@ -1,0 +1,31 @@
+const http = require('node:http');
+const url = require('url');
+
+const Member1 = ["Saitama", "Genos", "Fubuki"];
+const Member2 = ["Thorfinn"];
+
+function sendJSONResponse(res, statusCode, data) {
+    res.writeHead(statusCode, {
+        'content-type': 'application/json',
+    });
+    res.end(JSON.stringify(data, null, 2));
+}
+
+const server = http.createServer((req, res) => {
+    const parsedUrl = url.parse(req.url, true);
+    
+    if(parsedUrl.pathname.slice(-1) == "/") {
+        parsedUrl.pathname = parsedUrl.pathname.slice(0, -1);
+    }
+
+    if(parsedUrl.pathname == "/team1") {
+        sendJSONResponse(res, 200, Member1);
+    }else if(parsedUrl.pathname == "/team2") {
+        sendJSONResponse(res, 200, Member2);
+    }
+});
+
+const PORT = 3000;
+server.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+});

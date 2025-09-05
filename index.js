@@ -1,17 +1,21 @@
 const Express = require('express');
 const sendJSONPerson = require('./handler');
 const path = require('path');
+const userRouter = require('./user-router');
+const logger = require('./logger');
 
 const app = Express();
 
-app.use(Express.static("public"));
-app.use(Express.json({limit: "1mb"}));
+app.use("/user", userRouter);
 
 const PORT = 8000;
 
 app.listen(PORT, () => {
     console.info("App listening on port " + PORT);
 });
+
+app.use(Express.static("public"));
+app.use(Express.json({limit: "1mb"}));
 
 /* HTTP REQUEST IN EXPRESS */
 
@@ -49,4 +53,9 @@ app.get("/asta", sendJSONPerson);
 
 app['notify']('/notice', (req, res) => {
     res.send("Hello from NOTICE\n");
+});
+
+// MIDDLEWARE 
+app.get("/greet", logger, (req, res) => {
+    res.send(`Greetings ${req.name}\n`);
 });

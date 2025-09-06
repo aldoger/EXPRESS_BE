@@ -16,13 +16,18 @@ app.get("/users/:id", (req, res) => {
   res.send("user id: " + req.params.id); // misal : /users/123
 });
 
+app.get("/users/:userId/orders/:orderId", (req, res) => {
+  res.send(req.params);
+}); // misal : /users/5/orders/42
+
+
 // query
 app.get("/search", (req, res) => {
   res.send("Search query: " + req.query.siswa); // misal /search?siswa=abdul → "abdul"
 });
 
 // headers
-app.get("/headers", (req, res) => {
+app.post("/headers", (req, res) => {
   res.send(req.headers); // menampilkan semua header
 });
 
